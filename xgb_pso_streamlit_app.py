@@ -198,29 +198,34 @@ if submitted:
 #     language="bash",
 # )
 
-# st.sidebar.header("Model file")
-# st.sidebar.write("Keep `XGBPSOModel_success_seed1446.pkl` in the same folder as this app.")
 st.sidebar.header("Model Information")
 
 st.sidebar.write(
 """
-Model: XGBoost optimized with Particle Swarm Optimization (PSO)
+**Model:** XGBoost optimized with Particle Swarm Optimization (PSO)
 
-Inputs:
+**Inputs:**
 - BET specific surface area (m² g⁻¹)
 - Oxidant
 - Oxidant concentration (mM)
 - Molecular Weight (g/mol)
 - HBDC
 - HBAC
-- TPSA (Å²)
+- Topological Polar Surface Area (Å²)
 - Initial pollutant concentration (mg/L)
 - Solution pH
 - Light source
 - Catalyst dosage (mg/L)
 - Reaction time (min)
 
-Output:
+**Output:**
 - Predicted Degradation (%)
+
+---
+
+**Developer:** **Amir Dashti**  
+School of Civil and Environmental Engineering  
+**University of Technology Sydney**  
+Email: amirdashti13681990@gmail.com
 """
 )
