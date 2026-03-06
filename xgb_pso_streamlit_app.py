@@ -14,7 +14,7 @@ import streamlit as st
 # Page config
 # =========================
 st.set_page_config(
-    page_title="XGB-PSO Predictor for Phatmaceutical Degradation",
+    page_title="XGB-PSO Predictor for Pharmaceutical Degradation",
     page_icon="🧪",
     layout="centered",
 )
@@ -33,17 +33,19 @@ model = load_model()
 # =========================
 # Title / description
 # =========================
-st.title("XGB-PSO Degradation / Removal Predictor")
+st.title("XGB-PSO Predictor for Pharmaceutical Degradation by Various Photocatalysts")
 st.markdown(
-    "This app predicts **Degradation or Removal (%)** using your trained **XGBoost + PSO** model."
+    "This app predicts **Degradation (%)** of various pharmaceuticals by photocatalysts using trained **XGBoost + PSO** model."
 )
 
 with st.expander("Input format and notes", expanded=False):
     st.markdown(
         """
-- Enter all values using the same units used during model training.
-- **Oxidant** and **Light source** must use the same numeric encoding as your training dataset.
-- The app returns the predicted **Degradation or Removal (%)**.
+- Please enter all inputs using the same units applied during model training.
+- Oxidant = 1 indicates the presence of oxidant, whereas Oxidant = 2 indicates no oxidant.
+- Light source codes: 1 = UV, 2 = Visible, 3 = Simulated solar light.
+- The application predicts **Degradation (%)** based on the trained XGB-PSO model.
+
         """
     )
 
@@ -139,7 +141,7 @@ with st.form("prediction_form"):
             format="%.4f",
         )
 
-    submitted = st.form_submit_button("Predict Degradation / Removal (%)")
+    submitted = st.form_submit_button("Predict Degradation (%)")
 
 # =========================
 # Prediction
@@ -181,20 +183,44 @@ if submitted:
     prediction = float(model.predict(input_data)[0])
     prediction = max(0.0, min(100.0, prediction))
 
-    st.success(f"Predicted Degradation / Removal: {prediction:.2f}%")
+    st.success(f"Predicted Degradation: {prediction:.2f}%")
 
     with st.expander("Show input data used for prediction"):
         st.dataframe(input_data, use_container_width=True)
 
-# =========================
-# Sidebar info
-# =========================
-st.sidebar.header("Deployment")
-st.sidebar.code(
-    "pip install streamlit joblib xgboost pandas numpy\n"
-    "streamlit run xgb_pso_streamlit_app.py",
-    language="bash",
-)
+# # =========================
+# # Sidebar info
+# # =========================
+# st.sidebar.header("Deployment")
+# st.sidebar.code(
+#     "pip install streamlit joblib xgboost pandas numpy\n"
+#     "streamlit run xgb_pso_streamlit_app.py",
+#     language="bash",
+# )
 
-st.sidebar.header("Model file")
-st.sidebar.write("Keep `XGBPSOModel_success_seed1446.pkl` in the same folder as this app.")
+# st.sidebar.header("Model file")
+# st.sidebar.write("Keep `XGBPSOModel_success_seed1446.pkl` in the same folder as this app.")
+st.sidebar.header("Model Information")
+
+st.sidebar.write(
+"""
+Model: XGBoost optimized with Particle Swarm Optimization (PSO)
+
+Inputs:
+- BET specific surface area (m² g⁻¹)
+- Oxidant
+- Oxidant concentration (mM)
+- Molecular Weight (g/mol)
+- HBDC
+- HBAC
+- TPSA (Å²)
+- Initial pollutant concentration (mg/L)
+- Solution pH
+- Light source
+- Catalyst dosage (mg/L)
+- Reaction time (min)
+
+Output:
+- Predicted Degradation (%)
+"""
+)
